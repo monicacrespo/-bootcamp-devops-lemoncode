@@ -1,2 +1,2 @@
-# -bootcamp-devops-lemoncode
+# bootcamp-devops-lemoncode
 bootcamp devops lemoncode
