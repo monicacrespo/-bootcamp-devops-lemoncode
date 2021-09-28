@@ -64,12 +64,12 @@ file2.txt
 # This is awesome!
 # This is awesome!
 
-#-------- Start of "simple-bash-script.sh" file --------#
+# -------- Start of "simple-bash-script.sh" file -------- #
 #! /bin/bash
 
 DIR="./foo/"
 if [ -d "$DIR" ]; then
-          # Take action if $DIR exists. #
+    # Take action if $DIR exists #
             rm -r ${DIR}
 fi
 
@@ -77,8 +77,8 @@ fi
 # $1 is the first commandline argument
 TEXT=$1
 if [ "$1" = "" ]; then
-         # Take action if $TEXT is empty #
-           TEXT="Que me gusta la bash!!!!"
+      # Take action if $TEXT is empty #
+      TEXT="Que me gusta la bash!!!!"
 fi
 
 # exercise 1 commands
@@ -100,7 +100,31 @@ cat file2.txt
 mv file2.txt ../empty/
 cat ../empty/file2.txt
 
+# -------- End of "simple-bash-script.sh" file  ------ #
 
-#-------- End of "simple-bash-script.sh" file  ------#
+# 4. Opcional - Crea un script de bash que descargue el conetenido de una página web a un fichero. Una vez descargado el fichero, que busque en el mismo una palabra dada (esta se pasará por parametro) y muestre por pantalla el número de linea donde aparece.
 
-# 4. Opcional - Crea un script de bash que descargue el conetenido de una página web a un fichero.
+# 4.1. Create a bash script called simple-curl-grep-bash-script.sh using vim. See below
+# 4.2. Add the execute permission for everyone  =>  chmod +x simple-curl-grep-bash-script.sh 
+# 4.3. How to test:
+# $ ./simple-curl-grep-bash-script.sh "meta"
+# 5:    <meta charset="utf-8" />
+# 8:    <meta name="viewport" content="width=device-width, initial-scale=1" />
+# $ ./simple-curl-grep-bash-script.sh
+# The pattern is empty!
+
+# -------- Start End of "simple-curl-grep-bash-script.sh" file  ------ #
+#! /bin/bash
+
+curl --silent -o ./lemoncode-response.txt https://campus.lemoncode.net/
+
+# $1 is the first commandline argument
+if [ "$1" = "" ]; then   
+    echo "The pattern is empty!"
+else
+    # The -n option tells grep to show the line number of the lines containing a string that matches a pattern
+    grep -i -n "$1" ./lemoncode-response.txt
+fi
+
+# -------- End of "simple-curl-grep-bash-script.sh" file  ------ #
+
