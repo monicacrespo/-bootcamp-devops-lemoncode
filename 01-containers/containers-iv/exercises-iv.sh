@@ -25,4 +25,9 @@ docker volume ls
 # a. Using the option *Explore in Development Container* when you are on the volume and right click
 # b. Creating another container as follows:
 # 3. Map a local folder to a container. Modify the content of that folder and verify that you see the changes within the container
-docker run  -p 9000:8080 --mount type=bind,source=/Users/gis/Pics,target=/usr/src/app/images galleryapp
+docker run  -p 9000:8080 --mount type=bind,source=some-images,target=/usr/src/app/images galleryapp
+#: Error response from daemon: invalid mount config for type "bind": invalid mount path: 'some-images' mount path must be absolute
+#The following commands work and will map the local folder $(pwd)/some-images to a container
+docker run  -p 9000:8080 --mount type=bind,source=/c/Temporary/Training_IT_DevOps/BootCampDevOps/bootcamp-devops-student/01-containers/containers-iv/some-images,target=/usr/src/app/images galleryapp
+
+docker run  -p 9000:8080 --mount type=bind,source=$(pwd)/some-images,target=/usr/src/app/images galleryapp
