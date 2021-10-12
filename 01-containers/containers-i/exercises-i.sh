@@ -1,39 +1,39 @@
-#Deberes:
-# 1. Crear un contenedor con MongoDB, protegido con usuario y contraseña, añadir una colección, crear un par de documentos y acceder a ella a través de MongoDB Compass
-    # Pasos:
-    # - Localizar la imagen en Docker Hub para crear un MongoDB
+# 1. Create a container with MongoDB, authenticated by user and password, add a collection, create a couple of docs and access them via MongoDB Compass
+    # Steps:
+    # - Locate the image in Docker Hub to create a MongoDB
 docker search mongo
 https://hub.docker.com/_/mongo
-    # - Ver qué parámetros necesito para crearlo
+    # - Check what are the parameters needed to create it
 
 # Mac #
-
 docker run -d --name some-mongo \
     -p 27017:27017 \
     -e MONGO_INITDB_ROOT_USERNAME=mongoadmin \
     -e MONGO_INITDB_ROOT_PASSWORD=secret \
     mongo
 
-# Desde Compass conectate a tu nuevo MongoDB. Haz clic en la opción Fill in connection fields individually y añade los valores:
+# From Compass connect to your new MongoDB. Click on Fill option in connection fields individually:
 # hostname: localhost
 # port: 27017
 # Authentication: Username and Password
-# Las credenciales que hayas puesto
-# y haz clic en conectar
+# And do click on Connect button
 
-#Crea una base de datos que se llame Library y una colección llamada Books. 
-# Accede a ella e importa el archivo llamado books.json que se encuentra en el directorio de este ejercicio.
-# - Ver los logs de tu nuevo mongo
+# Create a database called Library and a collection called Books 
+# Access it and import the file called books.json that is under the folder of this exercise
+# - Check the logs
 docker logs some-mongo
 
-
-# 2. Servidor Nginx
-#    - Crea un servidor Nginx llamado lemoncoders-web y copia el contenido de la carpeta lemoncoders-web en la ruta que sirve este servidor web. 
-#    - Ejecuta dentro del contenedor la acción ls, para comprobar que los archivos se han copiado correctamente.
-#    - Hacer que el servidor web sea accesible desde el puerto 9999 de tu local.
+#├── lemoncoders-web
+#│   ├── index.html
+#│   └── styles.css
+#│──books.json
+# 2. Nginx server
+#    - Create a Nginx server called lemoncoders-web and copy the content of the lemoncoders-web folder in the path that serves this web server 
+#    - Run within the container the action ls, to check that the files have been copied ok
+#    - The web server needs to be accesible from 9999 port of your local machine
 docker run --name lemoncoders-web -d -p 9999:80 nginx 
 docker cp lemoncoders-web/. lemoncoders-web:/usr/share/nginx/html/
 docker exec lemoncoders-web ls /usr/share/nginx/html/
 
-# 3. Eliminar todos los contenedores que tienes ejecutándose en tu máquina en una sola línea. 
+# 3. Remove all the containers that are running in your machine 
 docker rm -f $(docker ps -aq)
