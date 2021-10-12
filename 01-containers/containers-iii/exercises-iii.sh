@@ -1,4 +1,3 @@
-#Exercises: 
 cd containers-iii
 # 1. Dockerize the application within hello-lemoncoder folder using Visual Studio Code
 
