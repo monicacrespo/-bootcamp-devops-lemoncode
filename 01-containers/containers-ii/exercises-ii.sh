@@ -2,8 +2,9 @@
 #├── /home/vagrant/
 #│   ├── Dockerfile
 #│   ├── Vagrantfile
-#│   └── public-html
-#│       └── index.html
+#│   └── content
+#│       |── index.html
+#|       └── site.css
 # 1. Create an Apache web server image using Dockerfile that serves the static content from content folder
 docker build . -t simple-apache:new
 # 2. Run the new image inside of a container
