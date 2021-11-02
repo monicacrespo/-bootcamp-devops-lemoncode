@@ -38,37 +38,45 @@ Where `file1.txt` and `file2.txt` contain the following text: "Me encanta la bas
 ```bash
 cp file1.txt file2.txt
 mv file2.txt ../empty/
-cat file{1,2}.txt
+cat file1.txt
+cat ../empty/file2.txt
 ```
 
 ### 3. Create a bash script that groups the steps from exercises 1 and 2 and set file1.txt content as the first command line argument passed in. If the first command line argument passed in is empty, the default text should be "Que me gusta la bash!!!!"
 
-1. Create the script `simple-bash-script.sh` using vim
+1. Create the script `simple-bash-script.sh`
 ```bash
 #! /bin/bash
 
 DIR="./foo/"
 if [ -d "$DIR" ]; then
-	  # Take action if $DIR exists. #
+	  # Take action if $DIR exists
 	    rm -r ${DIR}
 fi
 
+TEXT='Que me gusta la bash!!!!'
 
 # $1 is the first commandline argument
-TEXT=$1
-if [ "$1" = "" ]; then
-	 # Take action if $TEXT is empty #
-	   TEXT="Que me gusta la bash!!!!"       
+if [ $# -gt 1 ]; then
+  echo "Error: the number of passed parameters is greater than one!"
+  exit 1
 fi
 
-# commands from exercise 1 & 2 
+if [[ $# == 1 && "$1" != '' ]]; then
+	   # Variables must be double quoted to be expanded when comparing strings
+	   # Take action if "$1" is not empty
+	   TEXT=$1
+fi
+
+# commands from exercise 1 & 2
 mkdir -p foo/dummy foo/empty
 cd foo/dummy
-echo "$TEXT" > file1.txt
+echo $TEXT > file1.txt
 touch file2.txt
 cp file1.txt file2.txt
 mv file2.txt ../empty/
-cat file{1,2}.txt
+cat file1.txt
+cat ../empty/file2.txt
 ```
 
 2. Add the execute permission for everyone 
@@ -76,7 +84,7 @@ cat file{1,2}.txt
 chmod +x simple-bash-script.sh
 ```
 
-3. How to execute the script
+3. Execute the script to test different scenarios
    1. Test without any parameter
       ```bash
       ./simple-bash-script.sh
@@ -88,7 +96,7 @@ chmod +x simple-bash-script.sh
       ```
     2. Test with an empty parameter
         ```bash
-        ./simple-bash-script.sh ""
+        ./simple-bash-script.sh ''
         ```
         Result:
         ```
@@ -98,30 +106,50 @@ chmod +x simple-bash-script.sh
 
     3. Test with a non empty parameter
         ```bash
-        ./simple-bash-script.sh "Hi, this is awesome!!!"
+        ./simple-bash-script.sh 'Hi, this is awesome!!!'
         ```
         Result:
         ```
-        This is awesome!
-        This is awesome!
+        Hi, this is awesome!!!
+        Hi, this is awesome!!!
+        ```
+    4. Test with two parameters
+        ```bash
+        ./simple-bash-script.sh 'Hi, this is not awesome!!!' 'Exit'
+        ```
+        Result:
+        ```
+        Error: the number of passed parameters is greater than one!
         ```
 
 
-### 4. Optional - Create a bash script to download the web page content to a file. Once downloaded to a file, search it for a given string (text passed in as a command line argument) and display the line number of the lines containing that string.
+### 4. Optional - Create a bash script to download the web page content to a file. Once downloaded to a file, search it for a given string (text passed in as a command line argument) and display the first line number containing that string.
 
-1. Create the script `simple-curl-grep-bash-script.sh` using vim
+1. Create the script `simple-curl-grep-bash-script.sh`
 ```bash
 #! /bin/bash
 
-curl --silent -o ./lemoncode-response.txt https://campus.lemoncode.net/
+if [ $# != 1 ]; then 
+  echo "Usage: $0 text_that_you_are_looking_for"
+  exit 1
+fi
 
 # $1 is the first commandline argument
-if [ "$1" = "" ]; then
-	echo "The pattern is empty!"
-else
-	# The -n option tells grep to show the line number of the lines containing a string that matches a pattern
-	grep -i -n "$1" ./lemoncode-response.txt
+if [ "$1" == "" ]; then
+	echo "Error: the parameter passed in is empty!"
+	exit 1
 fi
+
+GREP_PATTERN=$1
+
+# Download the web page content to a file
+curl --silent https://campus.lemoncode.net/ --output lemoncode-output.txt 
+
+# Get the first line where the grep pattern appears
+grep -n $GREP_PATTERN lemoncode-output.txt | head -1 | cut -d':' -f 1
+# The -n option tells grep to display the line number of the lines containing a string that matches a pattern
+# The -f option tells cut to display only first field of each lines from lemoncode-output.txt file. In this case, the 1st field is the line number
+# And the option -d specifies what is the field delimiter. In this case, is : (colon)
 ```
 
 2. Add the execute permission for everyone 
@@ -129,21 +157,36 @@ fi
 chmod +x simple-curl-grep-bash-script.sh
 ```
 
-3. How to execute the script
+3. Execute the script to test different scenarios
    1. Test without any parameter
       ```bash
       ./simple-curl-grep-bash-script.sh
       ```
       Result:
       ```
-      The pattern is empty!
+      Error: the parameter passed in is empty!
       ```
-   2. Test with "meta" as parameter
+   2. Test with an empty parameter
       ```bash
-      ./simple-curl-grep-bash-script.sh "meta"
+      ./simple-curl-grep-bash-script.sh ''
       ```
       Result:
       ```
-      5:    <meta charset="utf-8" />
-      8:    <meta name="viewport" content="width=device-width, initial-scale=1" />
+      Usage: ./simple-curl-grep-bash-script.sh text_that_you_are_looking_for
+      ```
+   3. Test with three parameters
+      ```bash
+       ./simple-curl-grep-bash-script.sh non happy scenario
+      ```
+      Result:
+      ```
+      Usage: ./simple-curl-grep-bash-script.sh text_that_you_are_looking_for
+      ```
+   4. Test with a non empty parameter
+      ```bash
+      ./simple-curl-grep-bash-script.sh 'meta'
+      ```
+      Result:
+      ```
+      5
       ```

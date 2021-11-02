@@ -2,34 +2,30 @@
 
 DIR="./foo/"
 if [ -d "$DIR" ]; then
-	  # Take action if $DIR exists. #
+	  # Take action if $DIR exists
 	    rm -r ${DIR}
 fi
 
+TEXT='Que me gusta la bash!!!!'
 
 # $1 is the first commandline argument
-TEXT=$1
-if [ "$1" = "" ]; then
-	 # Take action if $TEXT is empty #
-	   TEXT="Que me gusta la bash!!!!"       
+if [ $# -gt 1 ]; then
+  echo "Error: the number of passed parameters is greater than one!"
+  exit 1
 fi
 
-# exercise 1 commands 
-mkdir -p foo/dummy
+if [[ $# == 1 && "$1" != '' ]]; then
+	   # Variables must be double quoted to be expanded when comparing strings
+	   # Take action if "$1" is not empty
+	   TEXT=$1
+fi
+
+# commands from exercise 1 & 2
+mkdir -p foo/dummy foo/empty
 cd foo/dummy
-touch file1.txt
+echo $TEXT > file1.txt
+touch file2.txt
 cp file1.txt file2.txt
-echo "$TEXT" > file1.txt
-cat file2.txt
-cat file1.txt
-cd ..
-mkdir empty
-
-# exercise 2 commands
-cd dummy
-cat file{1,2}.txt
-cp file1.txt file2.txt
-cat file2.txt
 mv file2.txt ../empty/
+cat file1.txt
 cat ../empty/file2.txt
-
