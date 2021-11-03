@@ -25,7 +25,7 @@ mkdir -p foo/dummy foo/empty
 cd foo/dummy
 echo $TEXT > file1.txt
 touch file2.txt
-cp file1.txt file2.txt
+echo "$(cat file1.txt)" > file2.txt
 mv file2.txt ../empty/
 cat file1.txt
 cat ../empty/file2.txt
