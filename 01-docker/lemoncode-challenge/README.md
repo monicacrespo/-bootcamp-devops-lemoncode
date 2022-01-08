@@ -26,8 +26,8 @@ The only component we don't have is the MongoDB. So start creating a Docker cont
     {"_id":{"$oid":"5fa2ca6abe7a379ec4234883"},"Name":"Docker"} 
     ```
     I have created the file called topics.json for you to get few records. You need to import it.
-
-    ![MongoDB Compass topics](https://github.com/monicacrespo/bootcamp-devops-student/blob/master/01-docker/lemoncode-challenge/images/MongoDBCompass.JPG)
+   
+    ![MongoDB Compass topics](https://github.com/monicacrespo/bootcamp-devops-student/blob/main/01-docker/lemoncode-challenge/images/MongoDBCompass.JPG)
 
 
 ### Steps to run the backend API in .NET
@@ -36,7 +36,7 @@ The only component we don't have is the MongoDB. So start creating a Docker cont
 
 2. Browse the topics `http://localhost:5000/api/topics`
 
-    ![Backend topics](https://github.com/monicacrespo/bootcamp-devops-student/tree/01-docker/lemoncode-challenge/images/BackEndTopics.JPG)
+    ![Backend topics](https://github.com/monicacrespo/bootcamp-devops-student/blob/main/01-docker/lemoncode-challenge/images/BackEndTopics.JPG)
 
 ### Steps to run the frontend in Node.js
 
@@ -44,4 +44,4 @@ The only component we don't have is the MongoDB. So start creating a Docker cont
 2. Once installed the dependencies you can run it with `npm start`
 3. Browse the topics using the frontend `http://localhost:3000`
 
-    ![Frontend topics](https://github.com/monicacrespo/bootcamp-devops-student/tree/01-docker/lemoncode-challenge/images/FrontEndTopics.JPG)
+    ![Frontend topics](https://github.com/monicacrespo/bootcamp-devops-student/blob/main/01-docker/lemoncode-challenge/images/FrontEndTopics.JPG)
