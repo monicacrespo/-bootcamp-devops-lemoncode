@@ -41,7 +41,10 @@ Acceptance Criteria:
 
     To check what are the parameters needed to create a MongoDB image you could go to Docker Hub https://hub.docker.com/_/mongo
 
-    Make sure some-mongo container has been created properly. ![MongoDB Compass topics](https://github.com/monicacrespo/bootcamp-devops-student/blob/main/01-docker/2.exercise-01/images/some-mongo-container.JPG)
+    Make sure some-mongo container has been created properly.
+    
+    ![some-mongo-container](https://github.com/monicacrespo/bootcamp-devops-student/blob/main/01-docker/2.exercise-01/images/some-mongo-container.jpg)
+
 
     * From MongoDB Compass connect to your new MongoDB and enter the following connection string:
        
