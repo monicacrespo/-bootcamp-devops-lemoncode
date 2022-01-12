@@ -23,7 +23,7 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "TopicstoreDatabaseSettings:ConnectionString=mongodb://some-mongo:27017"
+      - MONGO_URI=mongodb://some-mongo:27017
     networks: 
       - lemoncode-challenge
   frontend-web:

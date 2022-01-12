@@ -11,7 +11,7 @@ namespace backend.Service
 
         public TopicService(ITopicstoreDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            var client = new MongoClient(Environment.GetEnvironmentVariable("MONGO_URI"));
             var database = client.GetDatabase(settings.DatabaseName);
 
             _topics = database.GetCollection<Topic>(settings.TopicsCollectionName);

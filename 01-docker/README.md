@@ -2,57 +2,27 @@
 
 ### Application structure 
 
-The application consists of three parts:
+The application consists of three components:
 
-* A front-end in Node.js
-* A backend API in .NET that uses a MongoDB to store the data
+* A front-end in Node.js Express web application 
+* A backend API in .NET Core that uses a MongoDB database to store the data
 * A MongoDB database
+
 
 ### Solution structure 
 
 ```
-├── exercise-01
-├── exercise-02
-├── lemoncode-challege
+├── 1.lemoncode-challenge
+├── 2.exercise-01
+├── 3.exercise-02
 ├── README.md
+├── topics.json
 ```
 
-In more detail:
+The `1.lemoncode-challenge` folder contains the application's code AS IS, without any changes, provided by Lemoncode. 
 
-```
-├── exercise-01
-│   ├── backend
-│   	├── Dockerfile
-│   ├── frontend
-│   	├── Dockerfile
-│   ├── README.md
-│   ├── topics.json
-├── exercise-02
-│   ├── backend
-│   	├── Dockerfile
-│   ├── frontend
-│   	├── Dockerfile
-│   ├── docker-compose.yml
-│   ├── README.md
-│   ├── topics.json
-├── lemoncode-challege
-│   ├── backend
-│   ├── frontend
-│   ├── topics.json
-│   ├── README.md
-├── README.md
-```
+The `2.exercise-01` folder contains the steps to dockerize the app.
 
-### exercise-01. Dockerize the application within lemoncode-challenge folder with the following Acceptance Criteria:
+The `3.exercise-02` folder contains the steps to use Docker Compose improving Developer Experience.
 
-1. The three components must be within the same network called lemoncode-challenge.
-2. The backend must connect to the mongodb via this URL mongodb://some-mongo:27017
-3. The front-end must connect to the api through http://topics-api:5000/api/topics
-4. The front-end is mapped to port 8080 of the localhost.
-5. The MongoDB must store the data that is generating in one volume, mounted into the /data/db directory.
-6. The MongoDB must have a database called TopicstoreDb with a collection called Topics. 
-
-### exercise-02. Now that you have the exercise-01's application dockerized, use Docker Compose to launch all the components. You need to use: the network, MongoDB's volume, environment variables and ports exposed by the web and API.
-You also need to describe the commands you would use to bring up the envirsonment, stop and delete it.
-
-### lemoncode-challege. This folder contains the application's code AS IS, without any changes.
+The `topics.json` file contains few records that you can import into MongoDB database using any MongoDB GUI Client tool of your preference. For these exercises I will use MongoDB Compass.

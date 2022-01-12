@@ -1,16 +1,22 @@
+# Exercise 2. Use Docker Compose to improve Developer Experience
+Now that you have the exercise-01's application dockerized, use Docker Compose to launch all the components. 
+You need to use the network, MongoDB's volume, environment variables and ports exposed by the web and API.
+You also need to describe the commands you would use to bring up the environment, stop and delete it.
 
-### Project structure 
+### exercise-02 solution structure 
 
 ```
-├── exercise-02
-│   ├── backend
+├── 3.exercise-02
+├── backend
+│   	├── Dockerfile
 │   ├── frontend
+│   	├── Dockerfile
 │   ├── docker-compose.yml
 │   ├── README.md
-│   ├── topics.json
 ```
 
-# Steps:
+### Steps:
+
 1. Create the docker-compose.yml file
 
     Docker-compose.yml is a command-line file used during development and testing, where necessary definitions are made for multi-container running applications.
@@ -40,7 +46,7 @@
         restart: always
         environment:
         - ASPNETCORE_ENVIRONMENT=Development
-        - "TopicstoreDatabaseSettings:ConnectionString=mongodb://some-mongo:27017"
+        - MONGO_URI=mongodb://some-mongo:27017
         networks: 
         - lemoncode-challenge
     frontend-web:
@@ -62,7 +68,7 @@
         lemoncode-challenge:
     ```
 
-2. Run below command on top of project folder which include docker-compose.yml files to launch the containers and run the app(s).
+2. Run below command on top of project folder which include docker-compose.yml files to launch the containers and run the app(s)
 
     ```
     docker-compose --project-name lemoncode-challenge-docker up --build -d
@@ -71,21 +77,23 @@
     - `--build` Build is used to build all of the containers using their individual DOCKERFILEs 
     - `-d` Detached mode: Run containers in the background
 
-    Open up a browser and type http://localhost:8080 to get the topics. 8080 is our external port remember that maps to the internal port 3000 (-p [external port]:[internal port]).
-
-2. Make sure our containers are up
+    
+    Make sure our containers are up
     ```
     docker-compose -p lemoncode-challenge-docker ps
     ```
+
+    Open up a browser and type http://localhost:8080 to get the topics
+
 3. To stop the containers run the following command
     ```
     docker-compose -p lemoncode-challenge-docker stop
     ```
-4. To remove the containesrs once stopped
+4. To remove the containesrs once stopped run the following command
     ```
     docker-compose -p lemoncode-challenge-docker rm
     ```
-5. Stops containers and removes containers, networks, volumes, and images created by up.
+5. To stop containers and remove containers, networks, volumes, and images created by up, run the following command
   
     ```
     docker-compose -p lemoncode-challenge-docker down
