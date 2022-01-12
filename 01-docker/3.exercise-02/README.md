@@ -1,6 +1,8 @@
 # Exercise 2. Use Docker Compose to improve Developer Experience
 Now that you have the exercise-01's application dockerized, use Docker Compose to launch all the components. 
+
 You need to use the network, MongoDB's volume, environment variables and ports exposed by the web and API.
+
 You also need to describe the commands you would use to bring up the environment, stop and delete it.
 
 ### exercise-02 solution structure 
