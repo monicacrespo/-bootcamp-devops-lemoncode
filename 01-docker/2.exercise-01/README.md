@@ -235,18 +235,20 @@ Acceptance Criteria:
     FROM node:lts-alpine
     WORKDIR /usr/src/app
     COPY ["package.json", "package-lock.json*", "./"]
-    RUN npm install --silent && mv node_modules ../
+    RUN npm install
     COPY . .
     EXPOSE 3000
-    CMD ["npm", "start"]
+    CMD ["node", "server.js"]
     ```
 
+    - `FROM node:lts-alpine` Use the Long Term Support (LTS) version of Node.js, and the minimal alpine image type to have the smallest size and software footprint on the image
     - `WORKDIR /usr/src/app` Set the working directory to a directory inside your container image (/app). It is optional (default is /), but considered a good practice. Subsequent instructions in the Dockerfile, such as RUN, CMD and ENTRYPOINT will operate in this directory. 
     - `COPY . .` The contents of your build context directory will be copied to the /usr/src/app dir inside your docker image.
        - `src` is relative to the build context directory.
        - `dest` is relative to the WORKDIR directory.
-
-
+    - `CMD ["node", "server.js"]` Invoke the node process directly. CMD is the Dockerfile process execution directive. 
+    Note that `CMD ["npm", "start"]` also works, but it is not a good practice because it runs indirectly the node application by directly invoking the npm client. More details [here](https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/).
+    
 7. [FRONTEND] Build the Docker image from the Dockerfile that contains the frontend app
 
     ```

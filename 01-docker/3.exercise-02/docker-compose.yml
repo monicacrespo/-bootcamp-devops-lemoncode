@@ -36,7 +36,7 @@ services:
       - "8080:3000"
     restart: always
     environment:
-      API_URI: http://topics-api:5000/api/topics      
+      - API_URI=http://topics-api:5000/api/topics
     networks: 
       - lemoncode-challenge
 volumes:

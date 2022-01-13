@@ -61,7 +61,7 @@ You also need to describe the commands you would use to bring up the environment
         - "8080:3000"
         restart: always
         environment:
-        API_URI: http://topics-api:5000/api/topics      
+        - API_URI=http://topics-api:5000/api/topics
         networks: 
         - lemoncode-challenge
     volumes:
