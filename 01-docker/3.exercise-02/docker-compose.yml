@@ -6,11 +6,9 @@ services:
   some-mongo:
     image: mongo:latest
     volumes:
-      - topics-data:/data/db
-    ports:
-      - "27017:27017"
+      - topics-data:/data/db   
     restart: always
-    networks: 
+    networks:
         - lemoncode-challenge
   topics-api:
     depends_on:
@@ -18,12 +16,7 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
     restart: always
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - MONGO_URI=mongodb://some-mongo:27017
     networks: 
       - lemoncode-challenge
   frontend-web:
