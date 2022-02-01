@@ -11,10 +11,11 @@ You also need to describe the commands you would use to bring up the environment
 ├── 3.exercise-02
 ├── backend
 │   	├── Dockerfile
+│   	├── appsettings.json
 │   ├── frontend
 │   	├── Dockerfile
-│   ├── docker-compose.yml
-│   ├── README.md
+│   ├── docker-compose.yml (new)
+│   ├── README.md (new)
 ```
 
 ### Steps:
@@ -31,11 +32,9 @@ You also need to describe the commands you would use to bring up the environment
     some-mongo:
         image: mongo:latest
         volumes:
-        - topics-data:/data/db
-        ports:
-        - "27017:27017"
+        - topics-data:/data/db   
         restart: always
-        networks: 
+        networks:
             - lemoncode-challenge
     topics-api:
         depends_on:
@@ -43,12 +42,7 @@ You also need to describe the commands you would use to bring up the environment
         build: 
         context: ./backend
         dockerfile: Dockerfile
-        ports:
-        - "5000:5000"
         restart: always
-        environment:
-        - ASPNETCORE_ENVIRONMENT=Development
-        - MONGO_URI=mongodb://some-mongo:27017
         networks: 
         - lemoncode-challenge
     frontend-web:
@@ -86,11 +80,11 @@ You also need to describe the commands you would use to bring up the environment
     docker-compose -p lemoncode-challenge-docker ps
     ```
 
-    ```
-    NAME                                        COMMAND                  SERVICE             STATUS              PORTS
-    lemoncode-challenge-docker-frontend-web-1   "docker-entrypoint.s…"   frontend-web        running             0.0.0.0:8080->3000/tcplemoncode-challenge-docker-some-mongo-1  "docker-entrypoint.s…"   some-mongo          running             27017/tcp
-    lemoncode-challenge-docker-topics-api-1     "dotnet backend.dll"     topics-api          running             5000/tcp
-    ```
+    |NAME            |                            COMMAND         |         SERVICE    |         STATUS  |            PORTS|
+     | ------------- | ------------------|-------------------|--------|-------|
+    |lemoncode-challenge-docker-frontend-web-1  | "docker-entrypoint.s…"  | frontend-web   |     running  |           0.0.0.0:8080->3000/tcp |
+    |lemoncode-challenge-docker-some-mongo-1 | "docker-entrypoint.s…"  | some-mongo |        running   |          27017/tcp|
+    |lemoncode-challenge-docker-topics-api-1 |    "dotnet backend.dll" |    topics-api   |       running    |         5000/tcp|    
 
     Open up a browser and type http://localhost:8080 to get the topics
 

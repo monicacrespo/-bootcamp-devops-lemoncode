@@ -17,13 +17,14 @@ Acceptance Criteria:
 ```
 ├── 2.exercise-01
 │   ├── backend
-│   	├── Dockerfile
+│   	├── Dockerfile (new)
+│   	├── appsettings.json (updated)
 │   ├── frontend
-│   	├── Dockerfile
-│   ├── README.md
+│   	├── Dockerfile (new)
+│   ├── README.md (new)
 ```
 
-### Steps in the following order
+### Steps in the following order (using powershell if your sistem is Windows 64)
 1. [NETWORK] Create a new bridge/nat network called lemoncode-challenge
 
     ```
@@ -34,9 +35,9 @@ Acceptance Criteria:
 
     ```
     docker run --name some-mongo --network lemoncode-challenge `
-        --mount source=topics-data,target=/data/db `
-        -p 27017:27017 `
-        -d mongo
+    --mount source=topics-data,target=/data/db `
+    -p 27017:27017 `
+    -d mongo
     ```
 
     To check what are the parameters needed to create a MongoDB image you could go to Docker Hub https://hub.docker.com/_/mongo
@@ -137,42 +138,77 @@ Acceptance Criteria:
 4. [BACKEND] Build the Docker image named `backend-topics-image` from the Dockerfile that contains the backend app
 
     ```
+    cd .\backend\
     docker build -t backend-topics-image .
     ```
 
     After this command finishes, run `docker images` to see a list of images installed.
+
+    | REPOSITORY  | TAG | IMAGE ID| CREATED| SIZE|
+    | ------------- | ------------- |--|--|--|
+    | backend-topics-image  | latest  |12fadaa4f6a4|19 minutes ago|212MB|
+    | mongo  | latest  |b94db0d43242|33 minutes ago|698MB|
 
 5. [BACKEND] Create a docker container named `backend-topics`
 
     ```
     docker run -d --name backend-topics `
     --network lemoncode-challenge `
-    -p 5000:5000 `
-    --env "TopicstoreDatabaseSettings:ConnectionString=mongodb://some-mongo:27017" `
     backend-topics-image
     ```
+    
+    It is not necessary to pass any docker environment variable because the connection string has been updated in `appsettings.json` to be like this:
+    
+    ```
+    "TopicstoreDatabaseSettings": {
+    "ConnectionString": "mongodb://some-mongo:27017",
+    "TopicsCollectionName": "Topics",
+    "DatabaseName": "TopicstoreDb"
+    }
+    ```
 
-    - `-p 5000:5000` The backend api needs to be accesible from 5000 port of your local machine 
-    - `--env "TopicstoreDatabaseSettings:ConnectionString=mongodb://some-mongo:27017"` We override the MongoDB's connection string directly on the `Models/TopicstoreDatabaseSettings.cs` class
-    
-    
-    To use an environment variable, e.g. MONGO_URI, you need two things:
-    
-    1. Change line 14 of `Service/TopicService.cs` class as follows:
+    Before the change, the connection string was pointing to localhost:
 
-        ```
-        --var client = new MongoClient(settings.ConnectionString);
-        var client = new MongoClient(Environment.GetEnvironmentVariable("MONGO_URI"));
-        ```
-    2.  Create the `backend-topics` container
-   
+    ```
+    "TopicstoreDatabaseSettings": {
+    "ConnectionString": "mongodb://localhost:27017",
+    "TopicsCollectionName": "Topics",
+    "DatabaseName": "TopicstoreDb"
+    }
+    ```
+
+    Note that to pass a docker environment variable to override the MongoDB's connection string, you could follow two approaches: 
+    1. Setting the value directly into the `ConnectionString` property of `Models/TopicstoreDatabaseSettings.cs` class
+
         ```
         docker run -d --name backend-topics `
         --network lemoncode-challenge `
-        -p 5000:5000 `
-        --env MONGO_URI=mongodb://some-mongo:27017 `
+        --env "TopicstoreDatabaseSettings:ConnectionString=mongodb://some-mongo:27017" `
         backend-topics-image
-        ```    
+        ```
+
+    2. Using the static method Environment.GetEnvironmentVariable to access to an environment variable in a .NET Core application, e.g. MONGO_URI      
+        - Change line 14 of `Service/TopicService.cs` class as follows:
+
+            ```
+            --var client = new MongoClient(settings.ConnectionString);
+            var client = new MongoClient(Environment.GetEnvironmentVariable("MONGO_URI"));
+            ```
+        - Create the `backend-topics` container
+
+            ```
+            docker run -d --name backend-topics `
+            --network lemoncode-challenge `
+            --env MONGO_URI=mongodb://some-mongo:27017 `
+            backend-topics-image
+            ```
+
+    After this command finishes, run `docker ps` to see a list of containers installed.
+    | CONTAINER ID  | IMAGE             | COMMAND           | CREATED   | STATUS    |PORTS |NAMES |
+    | --------------| ------------------|-------------------|-----------|-----------|------|------|
+    | 9716d68053c1  | backend-topics-image|"dotnet backend.dll"|2 minutes ago|Up 2 minutes|5000/tcp|backend-topics|
+    | 156c91ab201c  | mongo             |"docker-entrypoint.s…"|13 minutes ago|Up 13 minutes|0.0.0.0:27017->27017/tcp|some-mongo|
+
 
     Run the following command to ensure backend-topics container connect to the lemoncode-challenge network: `docker network inspect lemoncode-challenge`
 
@@ -224,9 +260,6 @@ Acceptance Criteria:
     ]
     ```
 
-    We should be able to browse the topics using the backend api directly `http://localhost:5000/api/topics`
-
-
 6. [FRONTEND] Add the `Dockerfile` document within the frontend directory
 
     Dockerfile
@@ -249,9 +282,19 @@ Acceptance Criteria:
     - `CMD ["node", "server.js"]` Invoke the node process directly. CMD is the Dockerfile process execution directive. 
     Note that `CMD ["npm", "start"]` also works, but it is not a good practice because it runs indirectly the node application by directly invoking the npm client. More details [here](https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/).
     
+
+    After this command finishes, run `docker images` to see a list of images installed.
+
+    | REPOSITORY  | TAG | IMAGE ID| CREATED| SIZE|
+    | ------------- | ------------- |--|--|--|
+    | frontend-topics-image | latest  |6c70a33994d5|8 minutes ago|122MB|
+    | backend-topics-image  | latest  |12fadaa4f6a4|22 minutes ago|212MB|
+    | mongo  | latest  |b94db0d43242|33 minutes ago|698MB|
+
 7. [FRONTEND] Build the Docker image from the Dockerfile that contains the frontend app
 
     ```
+    cd ..\frontend\
     docker build -t frontend-topics-image . 
     ```
     
@@ -266,7 +309,6 @@ Acceptance Criteria:
 
 8. [FRONTEND] Create a docker container named `frontend-topics`
 
-
     ```
     docker run --name frontend-topics `
     --network lemoncode-challenge `
@@ -279,6 +321,14 @@ Acceptance Criteria:
     - `-e API_URI=http://backend-topics:5000/api/topics` We override the API URL path that allows to access the backend API.
 
     
+     After this command finishes, run `docker ps` to see a list of containers installed.
+    | CONTAINER ID  | IMAGE             | COMMAND           | CREATED| STATUS|PORTS|NAMES|
+    | ------------- | ------------------|-------------------|--------|-------|------|------|
+    | 9f6ac5b0b30e  | frontend-topics-image|"docker-entrypoint.s…"|9 minutes ago|Up 8 minutes|0.0.0.0:8080->3000/tcp|frontend-topics|
+    | 9716d68053c1  | backend-topics-image|"dotnet backend.dll"|12 minutes ago|Up 12 minutes|5000/tcp|backend-topics|
+    | 156c91ab201c  | mongo             |"docker-entrypoint.s…"|23 minutes ago|Up 23 minutes|0.0.0.0:27017->27017/tcp|some-mongo|
+
+
     Run the following command to ensure frontend-topics container connect to the lemoncode-challenge network: `docker network inspect lemoncode-challenge`
 
     ```
@@ -336,4 +386,4 @@ Acceptance Criteria:
     ]
     ```
 
-    We should be able to browse the topics using the frontend connecting to the backend api `http://localhost:8080/api/topics`
+    We should be able to browse the topics using the frontend connecting to the backend api `http://localhost:8080`
