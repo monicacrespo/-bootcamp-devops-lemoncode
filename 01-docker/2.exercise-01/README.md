@@ -24,7 +24,7 @@ Acceptance Criteria:
 │   ├── README.md (new)
 ```
 
-### Steps in the following order (using powershell if your sistem is Windows 64)
+### Steps in the following order (using powershell if your system is Windows 64)
 1. [NETWORK] Create a new bridge/nat network called lemoncode-challenge
 
     ```
