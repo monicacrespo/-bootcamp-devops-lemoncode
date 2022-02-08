@@ -10,7 +10,7 @@ pipeline {
     }
     stage('Compile') {
       steps {
-          dir('./calculator'){
+          dir('./03-cicd-jenkins/jenkins-resources/calculator'){
             echo "Compiling project"
             sh '''
             chmod +x gradlew
