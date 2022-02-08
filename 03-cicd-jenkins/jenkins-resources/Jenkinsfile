@@ -6,6 +6,7 @@ pipeline {
    stage('Checkout code') {
       steps {
         echo "Checking out project"
+      }
     }
     stage('Compile') {
       steps {
@@ -22,6 +23,6 @@ pipeline {
       steps {
         echo "Running unit tests"       
       }
-    }
-  }   
+    }   
+  }
 }
