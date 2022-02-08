@@ -6,6 +6,15 @@ pipeline {
    stage('Checkout code') {
       steps {
         echo "Checking out project"
+        // GIT checkout
+        checkout scm: [
+                $class: 'GitSCM',
+                branches: [[name: '*/main']], 
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [[$class: 'CleanCheckout']], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [[url: 'https://github.com/monicacrespo/bootcamp-devops-student.git']]
+        ]
       }
     }
     stage('Compile') {
