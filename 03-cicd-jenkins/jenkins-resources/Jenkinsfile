@@ -1,0 +1,27 @@
+pipeline {
+  agent any
+
+  stages {
+	
+   stage('Checkout code') {
+      steps {
+        echo "Checking out project"
+    }
+    stage('Compile') {
+      steps {
+          dir('./calculator'){
+            echo "Compiling project"
+            sh '''
+            chmod +x gradlew
+            ./gradlew compileJava
+            '''
+          }
+      }
+    }
+    stage('Unit Tests') {
+      steps {
+        echo "Running unit tests"       
+      }
+    }
+  }   
+}
