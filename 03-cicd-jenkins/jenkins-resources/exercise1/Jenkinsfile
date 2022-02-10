@@ -30,7 +30,10 @@ pipeline {
     }
     stage('Unit Tests') {
       steps {
-        echo "Running unit tests"       
+        dir('./03-cicd-jenkins/jenkins-resources/calculator'){
+          echo "Running unit tests" 
+          sh './gradlew test'
+        }  
       }
     }   
   }
