@@ -1,11 +1,11 @@
 pipeline {
   agent {
     docker {
-      dir './03-cicd-jenkins/jenkins-resources/calculator'
+      dir './03-cicd-jenkins/jenkins-resources'
       image 'gradle'
     }
   }
-  
+
   stages {
   
    stage('Checkout code') {
