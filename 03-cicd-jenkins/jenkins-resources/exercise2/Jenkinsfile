@@ -4,7 +4,8 @@ pipeline {
       dir './03-cicd-jenkins/jenkins-resources/calculator'
       image 'gradle'
     }
-
+  }
+  
   stages {
   
    stage('Checkout code') {
