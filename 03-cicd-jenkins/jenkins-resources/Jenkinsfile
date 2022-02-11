@@ -1,0 +1,58 @@
+pipeline {
+  agent {
+    docker {     
+      image 'node:alpine3.12'
+    }
+  }
+
+  stages {
+  
+   stage('Audit tools') {
+      steps {
+          auditTools()
+          sh 'printenv'
+          sh 'ls -l $WORKSPACE'
+      }
+   }
+   stage('Checkout code') {
+      steps {
+        echo "Checking out project"
+        // GIT checkout
+        checkout scm: [
+                $class: 'GitSCM',
+                branches: [[name: '*/main']], 
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [[$class: 'CleanCheckout']], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [[url: 'https://github.com/monicacrespo/bootcamp-devops-student.git']]
+        ]
+      }
+    }
+    stage('Compile') {
+      steps {
+          dir('./03-cicd-jenkins/jenkins-resources/calculator'){
+            echo "Compiling project"
+            sh '''
+            chmod +x gradlew
+            ./gradlew compileJava
+            '''
+          }
+      }
+    }
+    stage('Unit Tests') {
+      steps {
+        dir('./03-cicd-jenkins/jenkins-resources/calculator'){
+          echo "Running unit tests" 
+          sh './gradlew test'
+        }
+      }
+    }
+  }
+}
+void auditTools() {
+    sh '''
+       node --version
+       npm version
+      '''
+      
+}
