@@ -7,12 +7,7 @@ pipeline {
   }
 
   stages {
-  
-   stage('Audit tools') {
-      steps {
-          auditTools()
-      }
-   }
+    
    stage('Checkout code') {
       steps {
         echo "Checking out project"
@@ -47,13 +42,4 @@ pipeline {
       }
     }
   }
-}
-void auditTools() {
-    sh '''
-        docker-compose --version
-        docker --version
-        git version
-        node --version
-        npm version
-    '''
 }
