@@ -159,46 +159,19 @@ For the Checkout stage I have looked at https://plugins.jenkins.io/git-parameter
 
 Browse the classic UI http://localhost:8080
 
-1. New item, pipeline, exercise1
+1. New item, pipeline, exercise2
 2. Select pipeline from source control
 3. Git - https://github.com/monicacrespo/bootcamp-devops-jenkins.git
 4. Ensure that the source control branch is main
-5. Path to Jenkinsfile `03-cicd-jenkins/jenkins-resources/exercise1/Jenkinsfile`
+5. Path to Jenkinsfile `03-cicd-jenkins/jenkins-resources/exercise2/Jenkinsfile`
 6. Build Now
 7. Check
 
 For using Docker with Pipeline I have looked at https://www.jenkins.io/doc/book/pipeline/docker/
 
-Error Invalid agent type "call" specified. Must be one of [any, docker, dockerfile, kubernetes, label, none]
-
-Solution: You should install docker plugins to be able to use Docker in Jenkins.
-
-Go to manage Jenkins.
-Manage Plugins.
-Install:Docker pipeline and Docker
-
 
 ```
-[Pipeline] }
-[Pipeline] // stage
-[Pipeline] withEnv
-[Pipeline] {
-[Pipeline] stage
-[Pipeline] { (Declarative: Agent Setup)
-[Pipeline] isUnix
-[Pipeline] readFile
-[Pipeline] sh
-+ docker build -t 337635e67fe56b2a9286a9c04ed035e9a04f5811 -f ./03-cicd-jenkins/jenkins-resources/gradle.Dockerfile ./03-cicd-jenkins/jenkins-resources
-unable to resolve docker endpoint: open C:/Program Files/Git/certs/client/ca.pem: no such file or directory
-[Pipeline] }
-[Pipeline] // stage
-[Pipeline] }
-[Pipeline] // withEnv
-[Pipeline] }
-[Pipeline] // node
-[Pipeline] End of Pipeline
-ERROR: script returned exit code 1
-Finished: FAILURE
+
 ```
 
 
