@@ -1,8 +1,7 @@
 pipeline {
   agent {
-    dockerfile {
-      dir './03-cicd-jenkins/jenkins-resources'
-      filename 'gradle.Dockerfile'
+    docker {
+      image 'gradle'
     }
   }
 
