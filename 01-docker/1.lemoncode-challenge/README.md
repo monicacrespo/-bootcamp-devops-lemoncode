@@ -22,10 +22,10 @@ The only component we don't have is the MongoDB. So start creating a Docker cont
 1. Create a Docker container named `some-mongo` using the mongo image.
 
     ```
-    docker run --name my-mongo -p 27017:27017 -d mongo
+    docker run --name some-mongo -p 27017:27017 -d mongo
     ```
 
-2. Make sure my-mongo container has been created properly. From MongoDB Compass connect to your new MongoDB and enter the following connection string:
+2. Make sure some-mongo container has been created properly. From MongoDB Compass connect to your new MongoDB and enter the following connection string:
     ```
     mongodb://localhost:27017
     ```
